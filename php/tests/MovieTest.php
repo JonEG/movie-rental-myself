@@ -2,31 +2,11 @@
 
 namespace KataTests;
 
-use InvalidArgumentException;
 use Kata\Movie;
 use PHPUnit\Framework\TestCase;
 
 class MovieTest extends TestCase
 {
-    public function getMixedTypeValuesProvider()
-    {
-        //mixed types are object|resource|array|string|float|int|bool|null
-
-        $resource = fopen('php://temp', 'r');
-        fclose($resource);
-
-        return [
-            'object' => [new MovieTest(), InvalidArgumentException::class],
-            'resource' => [$resource, InvalidArgumentException::class],
-            'array' => [[], InvalidArgumentException::class],
-            'string' => ['', InvalidArgumentException::class],
-            'float' => [1.2, InvalidArgumentException::class],
-            'int' => [0, InvalidArgumentException::class],
-            'bool' => [false, InvalidArgumentException::class],
-            'null' => [null, InvalidArgumentException::class],
-        ];
-    }
-
     /**
      * Data provider for testing invalid titles
      * 
@@ -34,7 +14,7 @@ class MovieTest extends TestCase
      */
     public function invalidTitlesProvider()
     {
-        $mixedTypeValuesProvider = $this->getMixedTypeValuesProvider();
+        $mixedTypeValuesProvider = TestHelper::getMixedTypeValuesProvider();
         //remove valid title from list
         unset($mixedTypeValuesProvider['string']);
 
@@ -44,9 +24,9 @@ class MovieTest extends TestCase
     /**
      * @dataProvider invalidTitlesProvider
      */
-    public function test_movie_with_invalid_title_throws_exception($invalidTitle)
+    public function test_movie_with_invalid_title_throws_exception($invalidTitle, $expectedException)
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException($expectedException);
         new Movie($invalidTitle, Movie::REGULAR);
     }
 
@@ -66,7 +46,7 @@ class MovieTest extends TestCase
      */
     public function invalidPriceCodesProvider()
     {
-        $mixedTypeValuesProvider = $this->getMixedTypeValuesProvider();
+        $mixedTypeValuesProvider = TestHelper::getMixedTypeValuesProvider();
         //remove valid title from list
         unset($mixedTypeValuesProvider['int']);
 
@@ -76,9 +56,9 @@ class MovieTest extends TestCase
     /**
      * @dataProvider invalidPriceCodesProvider
      */
-    public function test_movie_with_invalid_price_code_throws_exception($invalidPriceCode)
+    public function test_movie_with_invalid_price_code_throws_exception($invalidPriceCode, $expectedException)
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException($expectedException);
         new Movie("test", $invalidPriceCode);
     }
 
