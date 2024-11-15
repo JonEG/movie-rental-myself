@@ -1,18 +1,26 @@
 <?php
 namespace Kata;
 
+use InvalidArgumentException;
+
 class Customer
 {
     private array $_rentals;
-    private mixed $_name;
+    private string $_name;
 
     public function __construct($string)
     {
+        if(!is_string($string)){
+            throw new InvalidArgumentException();
+        }
         $this->_name = $string;
     }
 
     public function addRental($param)
     {
+        if(!($param instanceof Rental)){
+            throw new InvalidArgumentException();
+        }
         $this->_rentals[] = $param;
     }
 

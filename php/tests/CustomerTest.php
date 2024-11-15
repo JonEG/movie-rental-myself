@@ -31,4 +31,47 @@ class CustomerTest extends TestCase
 
         $this->assertSame($expected, $customer->statement());
     }
+
+    /**
+     * Data provider for testing invalid names
+     * 
+     * @return array
+     */
+    public function invalidNamesProvider()
+    {
+        $mixedTypeValuesProvider = TestHelper::getMixedTypeValuesProvider();
+        //remove valid type from invalids list
+        unset($mixedTypeValuesProvider['string']);
+
+        return $mixedTypeValuesProvider;
+    }
+
+    /**
+     * @dataProvider invalidNamesProvider
+     */
+    public function test_customer_with_invalid_name_throws_exception($invalidName, $expectedException)
+    {
+        $this->expectException($expectedException);
+        new Customer($invalidName);
+    }
+
+    /**
+     * Data provider for testing invalid rentals
+     * 
+     * @return array
+     */
+    public function invalidRentalsProvider()
+    {
+        return TestHelper::getMixedTypeValuesProvider();
+    }
+
+    /**
+     * @dataProvider invalidRentalsProvider
+     */
+    public function test_customer_with_invalid_rental_throws_exception($invalidRental, $expectedException)
+    {
+        $this->expectException($expectedException);
+        $customer = new Customer("Maria");
+        $customer->addRental($invalidRental);
+    }
 }
