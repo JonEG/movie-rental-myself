@@ -28,14 +28,17 @@ class Customer
             //determine amounts for each line
             switch ($each->getMovie()->getPriceCode()) {
                 case Movie::REGULAR:
+                    // 2€ base price. From day three on, it adds 1'5€ per extra day
                     $thisAmount += 2;
                     if ($each->getDaysRented() > 2)
                         $thisAmount += ($each->getDaysRented() - 2) * 1.5;
                     break;
                 case Movie::NEW_RELEASE:
+                    // 3€ per day
                     $thisAmount += $each->getDaysRented() * 3;
                     break;
                 case Movie::CHILDRENS:
+                    // 1'5€ base price. From day four on, it adds 1'5€ per extra day
                     $thisAmount += 1.5;
                     if ($each->getDaysRented() > 3)
                         $thisAmount += ($each->getDaysRented() - 3) * 1.5;
@@ -44,7 +47,7 @@ class Customer
 
             // add frequent renter points
             $frequentRenterPoints++;
-            // add bonus for a two day new release rental
+            // add bonus for new release rentals(from two day on)
             if (($each->getMovie()->getPriceCode() == Movie::NEW_RELEASE) && $each->getDaysRented() > 1)
                 $frequentRenterPoints++;
 
