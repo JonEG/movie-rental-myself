@@ -65,11 +65,9 @@ class Rental
 
     public function getPoints(){
         switch ($this->_movie->getPriceCode()) {
-            case Movie::REGULAR:
-            case Movie::CHILDRENS:
-                return 1;
-            case Movie::NEW_RELEASE:
-                return $this->_daysRented;
+            case Movie::REGULAR: return 1;
+            case Movie::CHILDRENS: return 1;
+            case Movie::NEW_RELEASE: return $this->_daysRented;
         }
     }
 

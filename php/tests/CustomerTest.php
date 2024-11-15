@@ -31,6 +31,27 @@ class CustomerTest extends TestCase
 
         $this->assertSame($expected, $customer->statement());
     }
+    public function test_customer_when_add_rentals_then_total_amount_to_pay_increases()
+    {
+        $customer = new Customer("Bob");
+        $this->assertSame(0.0, $customer->getAmountToPay());
+        $customer->addRental(new Rental(new Movie("Jaws", Movie::REGULAR), 2));
+        $this->assertSame(2.0, $customer->getAmountToPay());
+        $customer->addRental(new Rental(new Movie("Golden Eye", Movie::REGULAR), 3));
+        $this->assertSame(5.5, $customer->getAmountToPay());
+    }
+
+    public function test_customer_when_add_rentals_then_total_points_amount_increases()
+    {
+        $customer = new Customer("Bob");
+        $this->assertSame(0, $customer->getAmountOfPoints());
+        $customer->addRental(new Rental(new Movie("Golden Eye", Movie::REGULAR), 3));
+        $this->assertSame(1, $customer->getAmountOfPoints());
+        $customer->addRental(new Rental(new Movie("Short New", Movie::NEW_RELEASE), 1));
+        $this->assertSame(2, $customer->getAmountOfPoints());
+        $customer->addRental(new Rental(new Movie("Long New", Movie::NEW_RELEASE), 2));
+        $this->assertSame(4, $customer->getAmountOfPoints());
+    }
 
     /**
      * Data provider for testing invalid names
