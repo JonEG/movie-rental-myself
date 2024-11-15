@@ -67,4 +67,34 @@ class RentalTest extends TestCase
 
         $this->assertSame($movie, $rental->getMovie());
     }
+
+    public function test_when_movie_is_rented_then_calculate_cost(){
+        $regularMovieTwoDayRental = (new Rental(new Movie("Jaws", Movie::REGULAR), 2));
+        $this->assertSame(2.0, $regularMovieTwoDayRental->getCost());
+        $regularMovieThreeDayRental = (new Rental(new Movie("Golden Eye", Movie::REGULAR), 3));
+        $this->assertSame(3.5, $regularMovieThreeDayRental->getCost());
+        $newReleaseMovieOneDayRental = (new Rental(new Movie("Short New", Movie::NEW_RELEASE), 1));
+        $this->assertSame(3.0, $newReleaseMovieOneDayRental->getCost());
+        $newReleaseMovieTwoDayRental = (new Rental(new Movie("Long New", Movie::NEW_RELEASE), 2));
+        $this->assertSame(6.0, $newReleaseMovieTwoDayRental->getCost());
+        $childrenMovieThreeDayRental = (new Rental(new Movie("Bambi", Movie::CHILDRENS), 3));
+        $this->assertSame(1.5, $childrenMovieThreeDayRental->getCost());
+        $childrenMovieFourDayRental = (new Rental(new Movie("Toy Story", Movie::CHILDRENS), 4));
+        $this->assertSame(3.0, $childrenMovieFourDayRental->getCost());
+    }
+
+    public function test_when_movie_is_rented_then_calculate_points(){
+        $regularMovieTwoDayRental = (new Rental(new Movie("Jaws", Movie::REGULAR), 2));
+        $this->assertSame(1, $regularMovieTwoDayRental->getPoints());
+        $regularMovieThreeDayRental = (new Rental(new Movie("Golden Eye", Movie::REGULAR), 3));
+        $this->assertSame(1, $regularMovieThreeDayRental->getPoints());
+        $newReleaseMovieOneDayRental = (new Rental(new Movie("Short New", Movie::NEW_RELEASE), 1));
+        $this->assertSame(1, $newReleaseMovieOneDayRental->getPoints());
+        $newReleaseMovieTwoDayRental = (new Rental(new Movie("Long New", Movie::NEW_RELEASE), 2));
+        $this->assertSame(2, $newReleaseMovieTwoDayRental->getPoints());
+        $childrenMovieThreeDayRental = (new Rental(new Movie("Bambi", Movie::CHILDRENS), 3));
+        $this->assertSame(1, $childrenMovieThreeDayRental->getPoints());
+        $childrenMovieFourDayRental = (new Rental(new Movie("Toy Story", Movie::CHILDRENS), 4));
+        $this->assertSame(1, $childrenMovieFourDayRental->getPoints());
+    }
 }

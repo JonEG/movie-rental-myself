@@ -28,40 +28,16 @@ class Customer
     {
         $totalAmount = 0;
         $frequentRenterPoints = 0;
-        $result = "Rental Record for " . $this->getName() . "\n";
+        // add header
+        $result = "Rental Record for $this->_name\n";
 
-        foreach ($this->_rentals as $each) {
-            $thisAmount = 0;
-
-            //determine amounts for each line
-            switch ($each->getMovie()->getPriceCode()) {
-                case Movie::REGULAR:
-                    // 2€ base price. From day three on, it adds 1'5€ per extra day
-                    $thisAmount += 2;
-                    if ($each->getDaysRented() > 2)
-                        $thisAmount += ($each->getDaysRented() - 2) * 1.5;
-                    break;
-                case Movie::NEW_RELEASE:
-                    // 3€ per day
-                    $thisAmount += $each->getDaysRented() * 3;
-                    break;
-                case Movie::CHILDRENS:
-                    // 1'5€ base price. From day four on, it adds 1'5€ per extra day
-                    $thisAmount += 1.5;
-                    if ($each->getDaysRented() > 3)
-                        $thisAmount += ($each->getDaysRented() - 3) * 1.5;
-                    break;
-            }
-
-            // add frequent renter points
-            $frequentRenterPoints++;
-            // add bonus for new release rentals(from two day on)
-            if (($each->getMovie()->getPriceCode() == Movie::NEW_RELEASE) && $each->getDaysRented() > 1)
-                $frequentRenterPoints++;
+        foreach ($this->_rentals as $rental) {
+            $rentalCost = $rental->getCost();
+            $totalAmount += $rentalCost;
+            $frequentRenterPoints += $rental->getPoints();
 
             // show figures for this rental
-            $result .= sprintf("\t%s\t%1.1f\n", $each->getMovie()->getTitle(), $thisAmount);
-            $totalAmount += $thisAmount;
+            $result .= sprintf("\t%s\t%1.1f\n", $rental->getMovie()->getTitle(), $rentalCost);
         }
 
         // add footer lines
@@ -69,11 +45,5 @@ class Customer
         $result .= "You earned " . $frequentRenterPoints . " frequent renter points";
 
         return $result;
-
-    }
-
-    private function getName()
-    {
-        return $this->_name;
     }
 }
