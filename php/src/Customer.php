@@ -5,19 +5,18 @@ use InvalidArgumentException;
 
 class Customer
 {
-    private array $_rentals;
-    private string $_name;
-    private float $_amountToPay;
-    private float $_amountOfPoints;
+    private array $rentals;
+    private float $amountToPay;
+    private float $amountOfPoints;
 
-    public function __construct($string)
+    public function __construct(private string $name)
     {
-        if(!is_string($string)){
+        if(!is_string($name)){
             throw new InvalidArgumentException();
         }
-        $this->_name = $string;
-        $this->_amountToPay = 0.0;
-        $this->_amountOfPoints = 0;
+        $this->name = $name;
+        $this->amountToPay = 0.0;
+        $this->amountOfPoints = 0;
     }
 
     public function addRental($rental)
@@ -25,34 +24,34 @@ class Customer
         if(!($rental instanceof Rental)){
             throw new InvalidArgumentException();
         }
-        $this->_amountToPay += $rental->getCost();
-        $this->_amountOfPoints += $rental->getPoints();
-        $this->_rentals[] = $rental;
+        $this->amountToPay += $rental->getCost();
+        $this->amountOfPoints += $rental->getPoints();
+        $this->rentals[] = $rental;
     }
 
     public function statement()
     {
         // add header
-        $result = "Rental Record for $this->_name\n";
+        $result = "Rental Record for $this->name\n";
 
-        foreach ($this->_rentals as $rental) {
+        foreach ($this->rentals as $rental) {
             $rentalCost = $rental->getCost();
             // show figures for this rental
             $result .= sprintf("\t%s\t%1.1f\n", $rental->getMovie()->getTitle(), $rentalCost);
         }
 
         // add footer lines
-        $result .= sprintf("Amount owed is %1.1f\n", $this->_amountToPay);
-        $result .= "You earned " . $this->_amountOfPoints . " frequent renter points";
+        $result .= sprintf("Amount owed is %1.1f\n", $this->amountToPay);
+        $result .= "You earned " . $this->amountOfPoints . " frequent renter points";
 
         return $result;
     }
 
     public function getAmountToPay(): float {
-        return $this->_amountToPay;
+        return $this->amountToPay;
     }
 
     public function getAmountOfPoints(): int {
-        return $this->_amountOfPoints;
+        return $this->amountOfPoints;
     }
 }
