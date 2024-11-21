@@ -1,29 +1,35 @@
 package movierental;
 
+enum MovieType {
+	CHILDREN, NEW_RELEASE, REGULAR, INVALID
+}
+
 public class Movie {
-
-    public static final int CHILDRENS = 2;
-    public static final int NEW_RELEASE = 1;
-    public static final int REGULAR = 0;
-
     private String title;
-    private int priceCode;
+    private MovieType type;
+    
+    public Movie(String title, MovieType type) {
+    	this.title = title;
+    	this.type = type;
+	}
 
-    public Movie(String title, int priceCode) {
-        this.title = title;
-        this.priceCode = priceCode;
-    }
-
-    public int getPriceCode() {
-        return priceCode;
-    }
-
-    public void setPriceCode(int priceCode) {
-        this.priceCode = priceCode;
-    }
     public String getTitle() {
         return title;
     }
-
-
+    
+    public MovieType getType() {
+    	return type;
+	}
+	
+	@Override
+	public boolean equals(Object other) {
+		if (other == null || (this.getClass() != other.getClass())) {
+		    return false;
+		} else {
+			Movie aux = (Movie) other;
+			boolean sameTitle = title == aux.title;
+			boolean sameType = type == aux.type;
+			return sameTitle && sameType;
+		}
+	}
 }
