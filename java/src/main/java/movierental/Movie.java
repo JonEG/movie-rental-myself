@@ -1,7 +1,7 @@
 package movierental;
 
 enum MovieType {
-	CHILDREN, NEW_RELEASE, REGULAR, INVALID
+	CHILDREN, NEW_RELEASE, REGULAR
 }
 
 public class Movie {
